@@ -1,0 +1,14 @@
+# Frontend (Nuxt / Vue / Node)
+node_modules/
+.nuxt/
+.output/
+dist/
+.env
+
+# Backend (Python / FastAPI)
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.env
