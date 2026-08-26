@@ -4,7 +4,7 @@ import logging
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, Column, String, func, case, or_, cast
+from sqlalchemy import create_engine, Column, String, func, case, or_, cast, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.exc import OperationalError, IntegrityError
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
@@ -114,6 +114,9 @@ def get_db():
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
+    with engine.begin() as conn:
+        # Permite que la búsqueda ignore tildes/acentos (José === Jose)
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
 
 @app.get("/")
 def health_check():
@@ -183,12 +186,17 @@ def read_characters(
     query = db.query(CharacterDB)
     if search:
         like = f"%{search}%"
-        # Busca por nombre y también dentro de la historia, roles y conexiones
+
+        def unaccent_ilike(column):
+            return func.unaccent(column).ilike(func.unaccent(like))
+
+        # Busca por nombre y también dentro de la historia, roles y conexiones,
+        # ignorando tildes/acentos en ambos lados (José === Jose)
         query = query.filter(or_(
-            CharacterDB.name.ilike(like),
-            cast(CharacterDB.story_sections, String).ilike(like),
-            cast(CharacterDB.roles, String).ilike(like),
-            cast(CharacterDB.related_characters, String).ilike(like),
+            unaccent_ilike(CharacterDB.name),
+            unaccent_ilike(cast(CharacterDB.story_sections, String)),
+            unaccent_ilike(cast(CharacterDB.roles, String)),
+            unaccent_ilike(cast(CharacterDB.related_characters, String)),
         ))
     if era:
         query = query.filter(CharacterDB.era == era)
