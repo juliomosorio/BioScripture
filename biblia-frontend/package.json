@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
     "leaflet": "^1.9.4",
     "nuxt": "^4.4.8",
+    "satori": "^0.33.4",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0"
   },

@@ -50,6 +50,16 @@
           <aside class="lg:col-span-3">
             <div class="sticky top-24 space-y-8">
 
+              <a
+                :href="whatsappUrl"
+                target="_blank"
+                rel="noopener"
+                class="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 rounded-2xl shadow-sm transition-colors"
+              >
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.478 2 2 6.477 2 12.002c0 2.045.596 3.995 1.7 5.65L2 22l4.44-1.65a9.96 9.96 0 005.564 1.65h.004c5.525 0 10.002-4.478 10.002-10.002C22 6.477 17.53 2 12.004 2zm0 18.156a8.16 8.16 0 01-4.156-1.14l-.298-.177-3.06 1.137 1.155-3.008-.194-.31a8.14 8.14 0 01-1.25-4.356c0-4.502 3.663-8.165 8.166-8.165 4.502 0 8.165 3.663 8.165 8.165 0 4.503-3.663 8.166-8.165 8.166z"/></svg>
+                Compartir por WhatsApp
+              </a>
+
               <div class="bg-white p-6 rounded-2xl shadow-sm border border-line">
                 <h3 class="font-bold text-ink mb-4 border-b border-line pb-2">Datos Clave</h3>
                 <dl class="space-y-4 text-sm">
@@ -158,4 +168,35 @@ const relatedIdByName = computed(() => {
 })
 
 useHead({ title: computed(() => character.value?.name || 'Personaje') })
+
+// --- Vista previa (Open Graph) y compartir por WhatsApp ---
+const requestUrl = useRequestURL()
+const pageUrl = computed(() => `${requestUrl.origin}${route.fullPath}`)
+
+const hook = computed(() => {
+  const content = character.value?.story_sections?.[0]?.content || ''
+  if (content.length <= 150) return content
+  return content.slice(0, 150).trim() + '…'
+})
+
+const ogImageUrl = computed(() => `${requestUrl.origin}/og/${characterId}.png`)
+
+useSeoMeta({
+  ogTitle: () => character.value?.name,
+  description: () => hook.value,
+  ogDescription: () => hook.value,
+  ogImage: () => ogImageUrl.value,
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogUrl: () => pageUrl.value,
+  twitterCard: 'summary_large_image',
+  twitterImage: () => ogImageUrl.value,
+})
+
+const whatsappUrl = computed(() => {
+  if (!character.value) return 'https://wa.me/'
+  const roleLine = character.value.roles?.[0] ? ` (${character.value.roles[0]})` : ''
+  const text = `📜 ${character.value.name}${roleLine}: ${hook.value}\n\nDescúbrelo en BioScripture 👉 ${pageUrl.value}`
+  return `https://wa.me/?text=${encodeURIComponent(text)}`
+})
 </script>
