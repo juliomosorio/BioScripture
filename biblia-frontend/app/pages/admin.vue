@@ -1,11 +1,11 @@
 <template>
   <div class="max-w-4xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-12">
+    <div class="bg-white rounded-3xl shadow-xl border border-line p-8 sm:p-12">
       
       <div class="flex justify-between items-start mb-8">
         <div>
-          <h1 class="text-3xl font-black text-slate-900 mb-2">Panel de Administración</h1>
-          <p class="text-slate-500">
+          <h1 class="text-3xl font-black text-ink mb-2">Panel de Administración</h1>
+          <p class="text-ink-faint">
             {{ isEditing ? 'Editando un registro histórico existente.' : 'Ingresa un nuevo personaje al registro histórico.' }}
           </p>
         </div>
@@ -20,24 +20,24 @@
 
       <form @submit.prevent="submitCharacter" class="space-y-8">
         
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-4">1. Identificación</h2>
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
+          <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">1. Identificación</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">ID Único</label>
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">ID Único</label>
               <div class="flex gap-2">
-                <input v-model="form.id" type="text" placeholder="ej: moises" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400" required :disabled="isEditing" />
-                <button v-if="!isEditing" type="button" @click="loadCharacter" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Buscar</button>
-                <button v-else type="button" @click="cancelEdit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Cancelar</button>
+                <input v-model="form.id" type="text" placeholder="ej: moises" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none disabled:bg-parchment-soft disabled:text-ink-faint" required :disabled="isEditing" />
+                <button v-if="!isEditing" type="button" @click="loadCharacter" class="bg-brand-50 hover:bg-brand-100 text-brand-700 font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Buscar</button>
+                <button v-else type="button" @click="cancelEdit" class="bg-line-soft hover:bg-line text-ink-soft font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Cancelar</button>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nombre Completo</label>
-              <input v-model="form.name" type="text" placeholder="ej: Moisés" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" required />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Nombre Completo</label>
+              <input v-model="form.name" type="text" placeholder="ej: Moisés" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Época</label>
-              <select v-model="form.era" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Época</label>
+              <select v-model="form.era" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required>
                 <option value="Inicios">Inicios</option>
                 <option value="Mundo Antiguo">Mundo Antiguo</option>
                 <option value="Patriarcas">Patriarcas</option>
@@ -50,106 +50,106 @@
           </div>
         </section>
 
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-4">2. Contexto y Enlaces (Separar por comas)</h2>
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
+          <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">2. Contexto y Enlaces (Separar por comas)</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Libros</label>
-              <input v-model="inputs.books" type="text" placeholder="Éxodo, Levítico" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Libros</label>
+              <input v-model="inputs.books" type="text" placeholder="Éxodo, Levítico" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Roles</label>
-              <input v-model="inputs.roles" type="text" placeholder="Profeta, Líder" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Roles</label>
+              <input v-model="inputs.roles" type="text" placeholder="Profeta, Líder" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Retrato (URL)</label>
-              <input v-model="form.portrait_url" type="url" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Retrato (URL)</label>
+              <input v-model="form.portrait_url" type="url" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Portada (URL)</label>
-              <input v-model="form.cover_url" type="url" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Portada (URL)</label>
+              <input v-model="form.cover_url" type="url" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
           </div>
         </section>
 
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-4">3. Árbol Genealógico (Separar por comas)</h2>
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
+          <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">3. Árbol Genealógico (Separar por comas)</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Padres</label>
-              <input v-model="inputs.parents" type="text" placeholder="Amram, Jocabed" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Padres</label>
+              <input v-model="inputs.parents" type="text" placeholder="Amram, Jocabed" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cónyuges</label>
-              <input v-model="inputs.spouses" type="text" placeholder="Séfora" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Cónyuges</label>
+              <input v-model="inputs.spouses" type="text" placeholder="Séfora" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hijos</label>
-              <input v-model="inputs.children" type="text" placeholder="Gersón, Eliezer" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Hijos</label>
+              <input v-model="inputs.children" type="text" placeholder="Gersón, Eliezer" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hermanos</label>
-              <input v-model="inputs.siblings" type="text" placeholder="Aarón, María" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Hermanos</label>
+              <input v-model="inputs.siblings" type="text" placeholder="Aarón, María" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Otras Conexiones Relevantes</label>
-              <input v-model="inputs.related" type="text" placeholder="Josué, Faraón" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Otras Conexiones Relevantes</label>
+              <input v-model="inputs.related" type="text" placeholder="Josué, Faraón" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
           </div>
         </section>
 
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-4">4. Narrativa</h2>
-          <textarea v-model="inputs.story" rows="4" placeholder="Redacta la historia..." class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
+          <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">4. Narrativa</h2>
+          <textarea v-model="inputs.story" rows="4" placeholder="Redacta la historia..." class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none"></textarea>
         </section>
 
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest">5. Versículos Bíblicos</h2>
-            <button type="button" @click="addVerseField" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Versículo</button>
+            <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest">5. Versículos Bíblicos</h2>
+            <button type="button" @click="addVerseField" class="text-xs bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Versículo</button>
           </div>
           <div class="space-y-4">
-            <div v-for="(verse, index) in dynamicVerses" :key="'verse'+index" class="bg-white p-4 rounded-xl border border-slate-200 relative">
+            <div v-for="(verse, index) in dynamicVerses" :key="'verse'+index" class="bg-white p-4 rounded-xl border border-line relative">
               <button type="button" @click="removeVerseField(index)" class="absolute top-2 right-3 text-xs font-bold text-red-400">Eliminar</button>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div class="md:col-span-1">
-                  <input v-model="verse.reference" type="text" placeholder="Ej: Éxodo 3:14" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" required />
+                  <input v-model="verse.reference" type="text" placeholder="Ej: Éxodo 3:14" class="w-full bg-parchment-soft border border-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none" required />
                 </div>
                 <div class="md:col-span-2">
-                  <input v-model="verse.text" type="text" placeholder="Y respondió Dios a Moisés: YO SOY EL QUE SOY..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" required />
+                  <input v-model="verse.text" type="text" placeholder="Y respondió Dios a Moisés: YO SOY EL QUE SOY..." class="w-full bg-parchment-soft border border-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none" required />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+        <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-sm font-bold text-indigo-600 uppercase tracking-widest">6. Trayectoria Geográfica</h2>
-            <button type="button" @click="addLocationField" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Parada</button>
+            <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest">6. Trayectoria Geográfica</h2>
+            <button type="button" @click="addLocationField" class="text-xs bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Parada</button>
           </div>
           <div class="space-y-4">
-            <div v-for="(loc, index) in dynamicLocations" :key="'loc'+index" class="bg-white p-4 rounded-xl border border-slate-200 relative">
+            <div v-for="(loc, index) in dynamicLocations" :key="'loc'+index" class="bg-white p-4 rounded-xl border border-line relative">
               <button type="button" @click="removeLocationField(index)" class="absolute top-2 right-3 text-xs font-bold text-red-400">Eliminar</button>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div>
-                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Punto {{ index + 1 }}</label>
-                  <input v-model="loc.name" type="text" placeholder="Ej: Madián" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <label class="block text-[10px] font-bold text-ink-faint uppercase tracking-wider mb-1">Punto {{ index + 1 }}</label>
+                  <input v-model="loc.name" type="text" placeholder="Ej: Madián" class="w-full bg-parchment-soft border border-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400" />
                 </div>
                 <div>
-                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Latitud</label>
-                  <input v-model="loc.lat" type="number" step="any" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <label class="block text-[10px] font-bold text-ink-faint uppercase tracking-wider mb-1">Latitud</label>
+                  <input v-model="loc.lat" type="number" step="any" class="w-full bg-parchment-soft border border-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400" />
                 </div>
                 <div>
-                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Longitud</label>
-                  <input v-model="loc.lng" type="number" step="any" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <label class="block text-[10px] font-bold text-ink-faint uppercase tracking-wider mb-1">Longitud</label>
+                  <input v-model="loc.lng" type="number" step="any" class="w-full bg-parchment-soft border border-line rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400" />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <button type="submit" :disabled="isSubmitting" :class="isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-slate-900 hover:bg-indigo-600'" class="w-full text-white font-bold py-4 rounded-xl transition-colors shadow-lg disabled:opacity-50">
+        <button type="submit" :disabled="isSubmitting" :class="isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-ink hover:bg-brand-600'" class="w-full text-white font-bold py-4 rounded-xl transition-colors shadow-lg disabled:opacity-50">
           {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Personaje' : 'Crear Personaje') }}
         </button>
 
@@ -158,12 +158,12 @@
         </div>
       </form>
 
-      <div class="mt-12 pt-12 border-t border-slate-200">
-        <h2 class="text-xl font-black text-slate-900 mb-2">Carga Masiva con IA</h2>
-        <p class="text-slate-500 mb-6">Pega aquí el arreglo JSON completo generado por la IA para guardarlo masivamente. Soporta los nuevos campos de genealogía.</p>
+      <div class="mt-12 pt-12 border-t border-line">
+        <h2 class="text-xl font-black text-ink mb-2">Carga Masiva con IA</h2>
+        <p class="text-ink-faint mb-6">Pega aquí el arreglo JSON completo generado por la IA para guardarlo masivamente. Soporta los nuevos campos de genealogía.</p>
         <div class="space-y-4">
-          <textarea v-model="bulkJsonText" rows="10" placeholder="[ { 'id': 'moises', 'parents': ['Amram'], ... } ]" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-mono text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-          <button @click="submitBulkCharacters" :disabled="isBulkSubmitting" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 shadow-md">
+          <textarea v-model="bulkJsonText" rows="10" placeholder="[ { 'id': 'moises', 'parents': ['Amram'], ... } ]" class="w-full bg-parchment-soft border border-line rounded-2xl p-4 font-mono text-xs focus:ring-2 focus:ring-brand-400 focus:outline-none"></textarea>
+          <button @click="submitBulkCharacters" :disabled="isBulkSubmitting" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 shadow-md">
             {{ isBulkSubmitting ? 'Procesando bloque de datos...' : 'Subir Todos los Personajes a la vez' }}
           </button>
           <div v-if="bulkMessage" :class="bulkMessage.includes('Error') ? 'text-red-500 bg-red-50' : 'text-green-600 bg-green-50'" class="p-4 rounded-xl font-bold text-center border">
@@ -178,6 +178,11 @@
 
 <script setup>
 import { ref } from 'vue'
+
+useHead({ title: 'Administración' })
+
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
 const isEditing = ref(false)
 const isSubmitting = ref(false)
@@ -216,7 +221,7 @@ const loadCharacter = async () => {
   if (!form.value.id) { message.value = 'Ingresa un ID.'; return }
   message.value = 'Buscando...'
   try {
-    const data = await $fetch(`http://localhost:8000/characters/${form.value.id.toLowerCase()}`)
+    const data = await $fetch(`${apiBase}/characters/${form.value.id.toLowerCase()}`)
     form.value = { ...data }
     
     // Carga de campos clásicos
@@ -287,7 +292,7 @@ const submitCharacter = async () => {
 
   try {
     const method = isEditing.value ? 'PUT' : 'POST'
-    const url = isEditing.value ? `http://localhost:8000/characters/${payload.id}` : 'http://localhost:8000/characters/'
+    const url = isEditing.value ? `${apiBase}/characters/${payload.id}` : `${apiBase}/characters/`
     await $fetch(url, { method, body: payload })
     message.value = isEditing.value ? '¡Actualizado con éxito!' : '¡Creado con éxito!'
     setTimeout(cancelEdit, 2000)
@@ -307,7 +312,7 @@ const submitBulkCharacters = async () => {
   bulkMessage.value = ''
   try {
     const parsedData = JSON.parse(bulkJsonText.value)
-    const res = await $fetch('http://localhost:8000/characters/bulk/', {
+    const res = await $fetch(`${apiBase}/characters/bulk/`, {
       method: 'POST',
       body: parsedData
     })

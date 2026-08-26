@@ -1,26 +1,47 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-[#F8FAFC]">
-    
-    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-50 transition-all duration-300">
+  <div class="min-h-screen flex flex-col bg-parchment">
+
+    <nav class="fixed top-0 left-0 right-0 bg-parchment/85 backdrop-blur-md border-b border-line z-50 transition-all duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <NuxtLink to="/" class="flex items-center gap-2 cursor-pointer group">
-            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:bg-indigo-700 transition-colors">
-              <span class="text-white font-bold font-serif">H</span>
-            </div>
-            <span class="font-black text-xl tracking-tight text-slate-900">Historia Sagrada</span>
+          <NuxtLink to="/" class="group">
+            <BrandLogo :size="34" />
           </NuxtLink>
-          
-          <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-500">
-            <NuxtLink to="/" class="hover:text-indigo-600 transition-colors">Inicio</NuxtLink>
-            <span class="hover:text-indigo-600 transition-colors cursor-pointer">Personajes</span>
-            <span class="hover:text-indigo-600 transition-colors cursor-pointer">Épocas</span>
-            
-            <div class="relative ml-4">
-              <input type="text" placeholder="Buscar personaje..." class="bg-slate-100 border-none rounded-full py-1.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-indigo-500 w-48 transition-all" />
-              <svg class="w-4 h-4 text-slate-400 absolute right-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
+
+          <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-ink-soft">
+            <NuxtLink to="/" class="hover:text-brand-600 transition-colors">Inicio</NuxtLink>
+            <NuxtLink to="/cronologia" class="hover:text-brand-600 transition-colors">Cronología</NuxtLink>
+            <button @click="goRandom" :disabled="randomLoading" class="hover:text-brand-600 transition-colors disabled:opacity-50 flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+              {{ randomLoading ? 'Buscando...' : 'Sorpréndeme' }}
+            </button>
+
+            <form @submit.prevent="submitSearch" class="relative ml-4">
+              <input v-model="navSearch" type="text" placeholder="Buscar personaje..." class="bg-white border border-line rounded-full py-1.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none w-48 transition-all" />
+              <button type="submit" class="absolute right-3 top-2 text-ink-faint hover:text-brand-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </button>
+            </form>
           </div>
+
+          <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-ink-soft hover:text-brand-600 transition-colors" aria-label="Abrir menú">
+            <svg v-if="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <div v-if="mobileOpen" class="md:hidden pb-6 space-y-4">
+          <form @submit.prevent="submitSearch" class="relative">
+            <input v-model="navSearch" type="text" placeholder="Buscar personaje..." class="w-full bg-white border border-line rounded-full py-2 pl-4 pr-10 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+            <button type="submit" class="absolute right-3 top-2.5 text-ink-faint">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </button>
+          </form>
+          <NuxtLink to="/" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Inicio</NuxtLink>
+          <NuxtLink to="/cronologia" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Cronología</NuxtLink>
+          <button @click="goRandom" :disabled="randomLoading" class="block font-semibold text-ink-soft hover:text-brand-600 disabled:opacity-50">
+            {{ randomLoading ? 'Buscando...' : 'Sorpréndeme' }}
+          </button>
         </div>
       </div>
     </nav>
@@ -29,19 +50,60 @@
       <slot />
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-12 mt-auto">
+    <footer class="bg-ink text-parchment py-14 mt-auto">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h3 class="text-lg font-black text-slate-900 mb-6">Explora otras historias</h3>
-        <div class="flex flex-wrap justify-center gap-4 mb-10">
-          <NuxtLink to="/" class="px-6 py-2 bg-slate-100 text-slate-700 font-semibold rounded-full hover:bg-slate-200 transition-colors">Volver al Inicio</NuxtLink>
-          <button class="px-6 py-2 bg-slate-100 text-slate-700 font-semibold rounded-full hover:bg-slate-200 transition-colors">Siguiente Personaje</button>
+        <div class="flex justify-center mb-6">
+          <BrandLogo :size="30" dark />
         </div>
-        <div class="border-t border-slate-100 pt-8 text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          <p class="mb-2 font-semibold">Información de Traducción</p>
+        <h3 class="text-lg font-black text-white mb-6">Explora otras historias</h3>
+        <div class="flex flex-wrap justify-center gap-4 mb-10">
+          <NuxtLink to="/" class="px-6 py-2 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors">Volver al Inicio</NuxtLink>
+          <button @click="goRandom" :disabled="randomLoading" class="px-6 py-2 bg-gold-400 text-ink font-semibold rounded-full hover:bg-gold-300 transition-colors disabled:opacity-50">
+            {{ randomLoading ? 'Buscando...' : 'Personaje Aleatorio' }}
+          </button>
+        </div>
+        <div class="border-t border-white/10 pt-8 text-xs text-white/50 max-w-2xl mx-auto leading-relaxed">
+          <p class="mb-2 font-semibold text-white/70">Información de Traducción</p>
           <p>Los versículos citados en esta plataforma han sido cuidadosamente seleccionados de la traducción Reina-Valera 1960 (RVR1960), manteniendo el equilibrio entre la fidelidad al texto original hebreo/arameo/griego y la belleza literaria.</p>
         </div>
       </div>
     </footer>
-    
+
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const router = useRouter()
+const route = useRoute()
+const config = useRuntimeConfig()
+
+const mobileOpen = ref(false)
+const navSearch = ref('')
+const randomLoading = ref(false)
+
+const submitSearch = () => {
+  if (!navSearch.value.trim()) return
+  mobileOpen.value = false
+  router.push({ path: '/', query: { search: navSearch.value } })
+}
+
+const goRandom = async () => {
+  randomLoading.value = true
+  mobileOpen.value = false
+  try {
+    const currentId = route.params.id
+    const char = await $fetch(`${config.public.apiBase}/characters/random/`, {
+      query: currentId ? { exclude: currentId } : {},
+      retry: 2,
+      retryDelay: 400
+    })
+    router.push(`/personaje/${char.id}`)
+  } catch (e) {
+    // Sin personajes disponibles o API caída; no interrumpimos la navegación.
+  } finally {
+    randomLoading.value = false
+  }
+}
+</script>

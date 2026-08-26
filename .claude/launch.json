@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "biblia-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "biblia-frontend", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

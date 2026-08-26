@@ -1,13 +1,13 @@
 <template>
-  <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mt-8">
-    <h4 class="font-bold text-slate-900 mb-4 text-sm flex items-center gap-2">
-      <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-line mt-8">
+    <h4 class="font-bold text-ink mb-4 text-sm flex items-center gap-2">
+      <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
       Ruta Histórica
     </h4>
-    
+
     <div id="biblical-map" class="h-[400px] w-full rounded-xl z-0 relative shadow-inner"></div>
-    
-    <p class="text-[10px] text-slate-400 mt-3 text-center uppercase tracking-wider">Trayectoria cronológica del personaje</p>
+
+    <p class="text-[10px] text-ink-faint mt-3 text-center uppercase tracking-wider">Trayectoria cronológica del personaje</p>
   </div>
 </template>
 
@@ -44,20 +44,20 @@ onMounted(async () => {
       // Creación del icono dinámico con el número correspondiente (1, 2, 3...)
       const numberedIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div style="background-color: #4f46e5; color: white; width: 28px; height: 28px; border-radius: 50%; border: 2px solid white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;">${index + 1}</div>`,
+        html: `<div style="background-color: #146B63; color: white; width: 28px; height: 28px; border-radius: 50%; border: 2px solid white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;">${index + 1}</div>`,
         iconSize: [28, 28],
         iconAnchor: [14, 14], // Centra el círculo exacto en la coordenada
         popupAnchor: [0, -14]
       })
       
       L.marker(point, { icon: numberedIcon }).addTo(map)
-        .bindPopup(`<div class="text-center"><b class="text-indigo-600 block mb-1">Paso ${index + 1}</b> ${loc.name}</div>`)
+        .bindPopup(`<div class="text-center"><b style="color:#146B63" class="block mb-1">Paso ${index + 1}</b> ${loc.name}</div>`)
     })
 
     // Dibujar la trayectoria
     if (latlngs.length > 1) {
       const polyline = L.polyline(latlngs, { 
-        color: '#4f46e5',
+        color: '#146B63',
         weight: 3, 
         dashArray: '8, 8', // Patrón de guiones más elegante
         opacity: 0.8
