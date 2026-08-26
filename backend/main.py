@@ -22,6 +22,9 @@ DATABASE_URL = os.environ.get(
     "postgresql://postgres:kjuliox@localhost:5432/historias_biblia",
 )
 CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(",")
+# Cualquier dominio *.vercel.app del mismo proyecto (producción, previews, ramas)
+# para no tener que actualizar CORS_ORIGINS a mano cada vez que Vercel genera uno nuevo
+CORS_ORIGIN_REGEX = os.environ.get("CORS_ORIGIN_REGEX", r"^https://bio-scripture(-[a-z0-9]+)*\.vercel\.app$")
 MAX_PAGE_LIMIT = 200
 
 # Orden cronológico de las épocas para la Línea de Tiempo (no alfabético)
@@ -96,6 +99,7 @@ app = FastAPI(title="API Personajes Bíblicos")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
+    allow_origin_regex=CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
