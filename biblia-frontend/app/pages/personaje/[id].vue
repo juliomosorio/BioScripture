@@ -141,14 +141,14 @@ const characterId = route.params.id
 const config = useRuntimeConfig()
 
 const { data: character, pending, error, refresh } = await useFetch(`${config.public.apiBase}/characters/${characterId}`, {
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 const { data: summary } = await useFetch(`${config.public.apiBase}/characters/summary/`, {
   default: () => [],
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 const relatedIdByName = computed(() => {

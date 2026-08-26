@@ -86,14 +86,14 @@ const selectedRole = ref('')
 
 const { data: eras } = await useFetch(`${apiBase}/characters/eras/`, {
   default: () => [],
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 const { data: roles } = await useFetch(`${apiBase}/characters/roles/`, {
   default: () => [],
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 // Parámetros reactivos para la petición
@@ -108,8 +108,8 @@ const queryParams = computed(() => {
 const { data: characters, pending, error, refresh } = await useFetch(`${apiBase}/characters/`, {
   query: queryParams,
   watch: [queryParams], // Refresca automáticamente si el usuario escribe o hace clic en un filtro
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 // Función para cambiar el filtro

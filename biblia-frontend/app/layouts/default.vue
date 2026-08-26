@@ -96,8 +96,8 @@ const goRandom = async () => {
     const currentId = route.params.id
     const char = await $fetch(`${config.public.apiBase}/characters/random/`, {
       query: currentId ? { exclude: currentId } : {},
-      retry: 2,
-      retryDelay: 400
+      retry: 6,
+      retryDelay: 3000
     })
     router.push(`/personaje/${char.id}`)
   } catch (e) {

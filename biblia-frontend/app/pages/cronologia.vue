@@ -66,8 +66,8 @@ const config = useRuntimeConfig()
 const { data: characters, pending, error, refresh } = await useFetch(`${config.public.apiBase}/characters/`, {
   query: { limit: 100 },
   default: () => [],
-  retry: 2,
-  retryDelay: 400
+  retry: 6,
+  retryDelay: 3000
 })
 
 const grouped = computed(() => {
