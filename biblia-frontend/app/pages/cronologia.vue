@@ -13,7 +13,7 @@
 
     <div v-if="pending" class="text-center py-20 text-brand-400 animate-pulse font-bold">Cargando cronología...</div>
 
-    <div v-else-if="error" class="max-w-md mx-auto text-center py-20 bg-white rounded-3xl border border-red-100 shadow-sm">
+    <div v-else-if="error" class="max-w-md mx-auto text-center py-20 bg-surface rounded-3xl border border-red-100 shadow-sm">
       <h3 class="text-xl font-bold text-red-500 mb-2">No se pudo conectar con la API</h3>
       <button @click="refresh()" class="mt-3 px-5 py-2 bg-brand-600 text-white font-semibold rounded-full hover:bg-brand-700 transition-colors">Reintentar</button>
     </div>
@@ -37,10 +37,17 @@
                 v-for="char in group.characters"
                 :key="char.id"
                 :to="`/personaje/${char.id}`"
-                class="flex items-center gap-3 bg-white rounded-xl border border-line p-3 hover:border-brand-300 hover:shadow-md hover:-translate-y-0.5 transition-all group"
+                class="flex items-center gap-3 bg-surface rounded-xl border border-line p-3 hover:border-brand-300 hover:shadow-md hover:-translate-y-0.5 transition-all group"
               >
-                <div class="w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center font-bold text-brand-700 flex-shrink-0 group-hover:bg-brand-100 transition-colors">
-                  {{ initial(char.name) }}
+                <div class="relative w-10 h-10 flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center font-bold text-brand-700 group-hover:bg-brand-100 transition-colors">
+                    {{ initial(char.name) }}
+                  </div>
+                  <ClientOnly>
+                    <div v-if="isRead(char.id)" class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-brand-600 border-2 border-surface flex items-center justify-center text-white">
+                      <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                  </ClientOnly>
                 </div>
                 <div class="min-w-0">
                   <div class="font-bold text-ink text-sm truncate group-hover:text-brand-600 transition-colors">{{ char.name }}</div>
@@ -80,4 +87,6 @@ const grouped = computed(() => {
 })
 
 const initial = (name) => (name || '?').trim().charAt(0).toUpperCase()
+
+const { isRead } = useReadProgress()
 </script>

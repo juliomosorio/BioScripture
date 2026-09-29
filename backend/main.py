@@ -2,7 +2,7 @@ import os
 import logging
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, Column, String, func, case, or_, cast, text
 from sqlalchemy.dialects.postgresql import JSONB
@@ -25,6 +25,7 @@ CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(","
 # Cualquier dominio *.vercel.app del mismo proyecto (producción, previews, ramas)
 # para no tener que actualizar CORS_ORIGINS a mano cada vez que Vercel genera uno nuevo
 CORS_ORIGIN_REGEX = os.environ.get("CORS_ORIGIN_REGEX", r"^https://bio-scripture(-[a-z0-9]+)*\.vercel\.app$")
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "dev-admin-local")
 MAX_PAGE_LIMIT = 200
 
 # Orden cronológico de las épocas para la Línea de Tiempo (no alfabético)
@@ -115,6 +116,10 @@ def get_db():
     finally:
         db.close()
 
+def require_admin(x_admin_token: Optional[str] = Header(None)):
+    if not x_admin_token or x_admin_token != ADMIN_TOKEN:
+        raise HTTPException(status_code=401, detail="Contraseña de administrador inválida")
+
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
@@ -126,10 +131,14 @@ def on_startup():
 def health_check():
     return {"status": "ok", "service": "API Personajes Bíblicos"}
 
+@app.get("/admin/verify")
+def verify_admin(_: None = Depends(require_admin)):
+    return {"ok": True}
+
 # --- 5. ENDPOINTS ---
 
 @app.post("/characters/", response_model=CharacterSchema, status_code=201)
-def create_character(character: CharacterSchema, db: Session = Depends(get_db)):
+def create_character(character: CharacterSchema, db: Session = Depends(get_db), _: None = Depends(require_admin)):
     db_char = db.query(CharacterDB).filter(CharacterDB.id == character.id).first()
     if db_char:
         raise HTTPException(status_code=400, detail="El personaje ya existe")
@@ -145,7 +154,7 @@ def create_character(character: CharacterSchema, db: Session = Depends(get_db)):
     return new_char
 
 @app.post("/characters/bulk/", response_model=List[CharacterSchema])
-def create_characters_bulk(characters: List[CharacterSchema], db: Session = Depends(get_db)):
+def create_characters_bulk(characters: List[CharacterSchema], db: Session = Depends(get_db), _: None = Depends(require_admin)):
     if not characters:
         raise HTTPException(status_code=400, detail="La lista de personajes está vacía")
 
@@ -194,13 +203,14 @@ def read_characters(
         def unaccent_ilike(column):
             return func.unaccent(column).ilike(func.unaccent(like))
 
-        # Busca por nombre y también dentro de la historia, roles y conexiones,
-        # ignorando tildes/acentos en ambos lados (José === Jose)
+        # Busca por nombre y también dentro de la historia, roles, conexiones
+        # y versículos clave (ej. "Juan 3:16"), ignorando tildes en ambos lados
         query = query.filter(or_(
             unaccent_ilike(CharacterDB.name),
             unaccent_ilike(cast(CharacterDB.story_sections, String)),
             unaccent_ilike(cast(CharacterDB.roles, String)),
             unaccent_ilike(cast(CharacterDB.related_characters, String)),
+            unaccent_ilike(cast(CharacterDB.key_verses, String)),
         ))
     if era:
         query = query.filter(CharacterDB.era == era)
@@ -273,7 +283,7 @@ def read_character(char_id: str, db: Session = Depends(get_db)):
     return db_char
 
 @app.put("/characters/{char_id}", response_model=CharacterSchema)
-def update_character(char_id: str, character: CharacterSchema, db: Session = Depends(get_db)):
+def update_character(char_id: str, character: CharacterSchema, db: Session = Depends(get_db), _: None = Depends(require_admin)):
     db_char = db.query(CharacterDB).filter(CharacterDB.id == char_id).first()
     if not db_char:
         raise HTTPException(status_code=404, detail="Personaje no encontrado")
@@ -290,7 +300,7 @@ def update_character(char_id: str, character: CharacterSchema, db: Session = Dep
     return db_char
 
 @app.delete("/characters/{char_id}", status_code=204)
-def delete_character(char_id: str, db: Session = Depends(get_db)):
+def delete_character(char_id: str, db: Session = Depends(get_db), _: None = Depends(require_admin)):
     db_char = db.query(CharacterDB).filter(CharacterDB.id == char_id).first()
     if not db_char:
         raise HTTPException(status_code=404, detail="Personaje no encontrado")

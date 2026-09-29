@@ -61,7 +61,7 @@
           <aside class="lg:col-span-3">
             <div class="sticky top-24 space-y-8">
 
-              <div class="bg-white p-6 rounded-2xl shadow-sm border border-line">
+              <div class="bg-surface p-6 rounded-2xl shadow-sm border border-line">
                 <h3 class="font-bold text-ink mb-4 border-b border-line pb-2">Datos Clave</h3>
                 <dl class="space-y-4 text-sm">
                   <div>
@@ -87,7 +87,7 @@
                 </dl>
               </div>
 
-              <div v-if="character.related_characters && character.related_characters.length" class="bg-white p-6 rounded-2xl shadow-sm border border-line">
+              <div v-if="character.related_characters && character.related_characters.length" class="bg-surface p-6 rounded-2xl shadow-sm border border-line">
                 <h3 class="font-bold text-ink mb-4 border-b border-line pb-2">Otras Conexiones</h3>
                 <ul class="space-y-2">
                   <li v-for="rel in character.related_characters" :key="rel" class="flex items-center gap-2 text-sm font-medium text-ink-soft">
@@ -161,6 +161,11 @@ const { data: summary } = await useFetch(`${config.public.apiBase}/characters/su
   retry: 6,
   retryDelay: 3000
 })
+
+const { markRead } = useReadProgress()
+watch(character, (c) => {
+  if (c) markRead(characterId)
+}, { immediate: true })
 
 const relatedIdByName = computed(() => {
   const map = {}

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-2xl shadow-sm border border-line mt-8">
+  <div class="bg-surface p-6 rounded-2xl shadow-sm border border-line mt-8">
     <h4 class="font-bold text-ink mb-6 text-xs uppercase tracking-widest flex items-center gap-2 border-b border-line pb-3">
       <svg class="w-4 h-4 text-ink-faint" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -16,7 +16,7 @@
             v-for="parent in character.parents"
             :key="parent"
             :to="`/personaje/${slugify(parent)}`"
-            class="bg-white border border-line text-ink-soft font-semibold px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:text-brand-700 hover:bg-brand-50/50 shadow-sm transition-colors"
+            class="bg-surface border border-line text-ink-soft font-semibold px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:text-brand-700 hover:bg-brand-50/50 shadow-sm transition-colors"
           >
             {{ parent }}
           </NuxtLink>
@@ -55,7 +55,7 @@
                 v-for="spouse in character.spouses"
                 :key="spouse"
                 :to="`/personaje/${slugify(spouse)}`"
-                class="bg-white border border-line border-dashed text-ink-soft font-medium px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:border-solid hover:text-brand-700 transition-colors"
+                class="bg-surface border border-line border-dashed text-ink-soft font-medium px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:border-solid hover:text-brand-700 transition-colors"
               >
                 {{ spouse }}
               </NuxtLink>
@@ -71,7 +71,7 @@
                 v-for="child in character.children"
                 :key="child"
                 :to="`/personaje/${slugify(child)}`"
-                class="bg-white border border-line text-ink-soft font-semibold px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:text-brand-700 hover:bg-brand-50/50 shadow-sm transition-colors"
+                class="bg-surface border border-line text-ink-soft font-semibold px-3 py-1.5 rounded-lg text-xs hover:border-brand-300 hover:text-brand-700 hover:bg-brand-50/50 shadow-sm transition-colors"
               >
                 {{ child }}
               </NuxtLink>

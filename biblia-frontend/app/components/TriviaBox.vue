@@ -1,5 +1,5 @@
 <template>
-  <div v-if="questions.length" class="bg-white rounded-2xl border border-line shadow-sm p-6 md:p-8 mt-12">
+  <div v-if="questions.length" class="bg-surface rounded-2xl border border-line shadow-sm p-6 md:p-8 mt-12">
     <h3 class="font-serif text-2xl font-black text-ink mb-1">¿Cuánto recuerdas?</h3>
     <p class="text-sm text-ink-faint mb-6">Pon a prueba lo que acabas de leer sobre {{ characterName }}.</p>
 

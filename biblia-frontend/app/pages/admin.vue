@@ -1,7 +1,23 @@
 <template>
   <div class="max-w-4xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-3xl shadow-xl border border-line p-8 sm:p-12">
-      
+
+    <div v-if="!authed" class="max-w-sm mx-auto bg-surface rounded-3xl shadow-xl border border-line p-8 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-ink text-white flex items-center justify-center mx-auto mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm0 0v5m6-5a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <h1 class="text-xl font-black text-ink mb-2">Acceso de Administración</h1>
+      <p class="text-ink-faint text-sm mb-6">Ingresa la contraseña para editar el registro histórico.</p>
+      <form @submit.prevent="login" class="space-y-3">
+        <input v-model="passwordInput" type="password" placeholder="Contraseña" autofocus class="w-full bg-parchment-soft border border-line rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+        <button type="submit" :disabled="verifying" class="w-full bg-ink hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50">
+          {{ verifying ? 'Verificando...' : 'Entrar' }}
+        </button>
+        <p v-if="loginError" class="text-red-500 text-sm font-semibold">{{ loginError }}</p>
+      </form>
+    </div>
+
+    <div v-else class="bg-surface rounded-3xl shadow-xl border border-line p-8 sm:p-12">
+
       <div class="flex justify-between items-start mb-8">
         <div>
           <h1 class="text-3xl font-black text-ink mb-2">Panel de Administración</h1>
@@ -9,13 +25,16 @@
             {{ isEditing ? 'Editando un registro histórico existente.' : 'Ingresa un nuevo personaje al registro histórico.' }}
           </p>
         </div>
-        <span v-if="isEditing" class="bg-amber-100 text-amber-700 font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2">
-          <span class="relative flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+        <div class="flex items-center gap-3">
+          <span v-if="isEditing" class="bg-amber-100 text-amber-700 font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            </span>
+            MODO EDICIÓN
           </span>
-          MODO EDICIÓN
-        </span>
+          <button @click="logout" type="button" class="text-xs font-bold text-ink-faint hover:text-red-500 transition-colors">Cerrar sesión</button>
+        </div>
       </div>
 
       <form @submit.prevent="submitCharacter" class="space-y-8">
@@ -26,18 +45,18 @@
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">ID Único</label>
               <div class="flex gap-2">
-                <input v-model="form.id" type="text" placeholder="ej: moises" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none disabled:bg-parchment-soft disabled:text-ink-faint" required :disabled="isEditing" />
+                <input v-model="form.id" type="text" placeholder="ej: moises" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none disabled:bg-parchment-soft disabled:text-ink-faint" required :disabled="isEditing" />
                 <button v-if="!isEditing" type="button" @click="loadCharacter" class="bg-brand-50 hover:bg-brand-100 text-brand-700 font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Buscar</button>
                 <button v-else type="button" @click="cancelEdit" class="bg-line-soft hover:bg-line text-ink-soft font-bold px-4 py-3 rounded-xl transition-colors whitespace-nowrap">Cancelar</button>
               </div>
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Nombre Completo</label>
-              <input v-model="form.name" type="text" placeholder="ej: Moisés" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required />
+              <input v-model="form.name" type="text" placeholder="ej: Moisés" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required />
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Época</label>
-              <select v-model="form.era" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required>
+              <select v-model="form.era" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" required>
                 <option value="Inicios">Inicios</option>
                 <option value="Mundo Antiguo">Mundo Antiguo</option>
                 <option value="Patriarcas">Patriarcas</option>
@@ -55,19 +74,19 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Libros</label>
-              <input v-model="inputs.books" type="text" placeholder="Éxodo, Levítico" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.books" type="text" placeholder="Éxodo, Levítico" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Roles</label>
-              <input v-model="inputs.roles" type="text" placeholder="Profeta, Líder" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.roles" type="text" placeholder="Profeta, Líder" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Retrato (URL)</label>
-              <input v-model="form.portrait_url" type="url" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="form.portrait_url" type="url" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Portada (URL)</label>
-              <input v-model="form.cover_url" type="url" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="form.cover_url" type="url" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
           </div>
         </section>
@@ -77,30 +96,30 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Padres</label>
-              <input v-model="inputs.parents" type="text" placeholder="Amram, Jocabed" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.parents" type="text" placeholder="Amram, Jocabed" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Cónyuges</label>
-              <input v-model="inputs.spouses" type="text" placeholder="Séfora" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.spouses" type="text" placeholder="Séfora" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Hijos</label>
-              <input v-model="inputs.children" type="text" placeholder="Gersón, Eliezer" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.children" type="text" placeholder="Gersón, Eliezer" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div>
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Hermanos</label>
-              <input v-model="inputs.siblings" type="text" placeholder="Aarón, María" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.siblings" type="text" placeholder="Aarón, María" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs font-bold text-ink-faint uppercase tracking-wider mb-2">Otras Conexiones Relevantes</label>
-              <input v-model="inputs.related" type="text" placeholder="Josué, Faraón" class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
+              <input v-model="inputs.related" type="text" placeholder="Josué, Faraón" class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none" />
             </div>
           </div>
         </section>
 
         <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
           <h2 class="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">4. Narrativa</h2>
-          <textarea v-model="inputs.story" rows="4" placeholder="Redacta la historia..." class="w-full bg-white border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none"></textarea>
+          <textarea v-model="inputs.story" rows="4" placeholder="Redacta la historia..." class="w-full bg-surface border border-line rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-400 focus:outline-none"></textarea>
         </section>
 
         <section class="bg-parchment-soft p-6 rounded-2xl border border-line">
@@ -109,7 +128,7 @@
             <button type="button" @click="addVerseField" class="text-xs bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Versículo</button>
           </div>
           <div class="space-y-4">
-            <div v-for="(verse, index) in dynamicVerses" :key="'verse'+index" class="bg-white p-4 rounded-xl border border-line relative">
+            <div v-for="(verse, index) in dynamicVerses" :key="'verse'+index" class="bg-surface p-4 rounded-xl border border-line relative">
               <button type="button" @click="removeVerseField(index)" class="absolute top-2 right-3 text-xs font-bold text-red-400">Eliminar</button>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div class="md:col-span-1">
@@ -129,7 +148,7 @@
             <button type="button" @click="addLocationField" class="text-xs bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg">+ Agregar Parada</button>
           </div>
           <div class="space-y-4">
-            <div v-for="(loc, index) in dynamicLocations" :key="'loc'+index" class="bg-white p-4 rounded-xl border border-line relative">
+            <div v-for="(loc, index) in dynamicLocations" :key="'loc'+index" class="bg-surface p-4 rounded-xl border border-line relative">
               <button type="button" @click="removeLocationField(index)" class="absolute top-2 right-3 text-xs font-bold text-red-400">Eliminar</button>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div>
@@ -177,12 +196,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 useHead({ title: 'Administración' })
 
 const config = useRuntimeConfig()
 const apiBase = config.public.apiBase
+
+// --- Acceso por contraseña ---
+const authed = ref(false)
+const passwordInput = ref('')
+const verifying = ref(false)
+const loginError = ref('')
+
+const adminHeaders = () => ({ 'X-Admin-Token': sessionStorage.getItem('admin_token') || '' })
+
+onMounted(() => {
+  const saved = sessionStorage.getItem('admin_token')
+  if (saved) verifyToken(saved)
+})
+
+const verifyToken = async (token) => {
+  verifying.value = true
+  loginError.value = ''
+  try {
+    await $fetch(`${apiBase}/admin/verify`, { headers: { 'X-Admin-Token': token } })
+    sessionStorage.setItem('admin_token', token)
+    authed.value = true
+  } catch (error) {
+    sessionStorage.removeItem('admin_token')
+    authed.value = false
+    if (token) loginError.value = 'Contraseña incorrecta.'
+  } finally {
+    verifying.value = false
+  }
+}
+
+const login = () => verifyToken(passwordInput.value)
+
+const logout = () => {
+  sessionStorage.removeItem('admin_token')
+  authed.value = false
+  passwordInput.value = ''
+}
 
 const isEditing = ref(false)
 const isSubmitting = ref(false)
@@ -293,7 +349,7 @@ const submitCharacter = async () => {
   try {
     const method = isEditing.value ? 'PUT' : 'POST'
     const url = isEditing.value ? `${apiBase}/characters/${payload.id}` : `${apiBase}/characters/`
-    await $fetch(url, { method, body: payload })
+    await $fetch(url, { method, body: payload, headers: adminHeaders() })
     message.value = isEditing.value ? '¡Actualizado con éxito!' : '¡Creado con éxito!'
     setTimeout(cancelEdit, 2000)
   } catch (error) {
@@ -314,7 +370,8 @@ const submitBulkCharacters = async () => {
     const parsedData = JSON.parse(bulkJsonText.value)
     const res = await $fetch(`${apiBase}/characters/bulk/`, {
       method: 'POST',
-      body: parsedData
+      body: parsedData,
+      headers: adminHeaders()
     })
     bulkMessage.value = `¡Carga masiva completada! Se procesaron ${res.length} personajes.`
     bulkJsonText.value = ''

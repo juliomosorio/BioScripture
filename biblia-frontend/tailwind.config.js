@@ -1,44 +1,51 @@
 /** @type {import('tailwindcss').Config} */
+
+// Convierte una variable CSS de canales RGB ("R G B") en un color que
+// Tailwind puede usar con modificadores de opacidad (ej. bg-brand-600/50).
+const withOpacity = (variable) => `rgb(var(${variable}) / <alpha-value>)`
+
 export default {
   content: [
     "./app/**/*.{js,vue,ts}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         parchment: {
-          DEFAULT: '#FAF6EE',
-          soft: '#F4EEE0',
+          DEFAULT: withOpacity('--color-parchment'),
+          soft: withOpacity('--color-parchment-soft'),
         },
+        surface: withOpacity('--color-surface'),
         ink: {
-          DEFAULT: '#241C15',
-          soft: '#4B443C',
-          faint: '#8A8072',
+          DEFAULT: withOpacity('--color-ink'),
+          soft: withOpacity('--color-ink-soft'),
+          faint: withOpacity('--color-ink-faint'),
         },
         line: {
-          DEFAULT: '#E8E0D0',
-          soft: '#F0EAD9',
+          DEFAULT: withOpacity('--color-line'),
+          soft: withOpacity('--color-line-soft'),
         },
         brand: {
-          50: '#EAF5F3',
-          100: '#CFE7E3',
-          200: '#9FCFC7',
-          300: '#6FB7AB',
-          400: '#3F9F8F',
-          500: '#1D8474',
-          600: '#146B63',
-          700: '#0F5250',
-          800: '#0B3E3D',
-          900: '#082B2B',
+          50: withOpacity('--color-brand-50'),
+          100: withOpacity('--color-brand-100'),
+          200: withOpacity('--color-brand-200'),
+          300: withOpacity('--color-brand-300'),
+          400: withOpacity('--color-brand-400'),
+          500: withOpacity('--color-brand-500'),
+          600: withOpacity('--color-brand-600'),
+          700: withOpacity('--color-brand-700'),
+          800: withOpacity('--color-brand-800'),
+          900: withOpacity('--color-brand-900'),
         },
         gold: {
-          50: '#FBF3DF',
-          100: '#F3E3B4',
-          200: '#E7CD80',
-          300: '#D9B657',
-          400: '#C89B3C',
-          500: '#B0812C',
-          600: '#8F6624',
+          50: withOpacity('--color-gold-50'),
+          100: withOpacity('--color-gold-100'),
+          200: withOpacity('--color-gold-200'),
+          300: withOpacity('--color-gold-300'),
+          400: withOpacity('--color-gold-400'),
+          500: withOpacity('--color-gold-500'),
+          600: withOpacity('--color-gold-600'),
         },
       },
       fontFamily: {

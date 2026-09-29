@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens de color como canales RGB (sin "rgb(...)") para que Tailwind pueda
+   aplicarles opacidad con la sintaxis bg-brand-600/50, etc. Ver tailwind.config.js. */
+:root {
+  --color-parchment: 250 246 238;
+  --color-parchment-soft: 244 238 224;
+  --color-surface: 255 255 255;
+  --color-ink: 36 28 21;
+  --color-ink-soft: 75 68 60;
+  --color-ink-faint: 138 128 114;
+  --color-line: 232 224 208;
+  --color-line-soft: 240 234 217;
+
+  --color-brand-50: 234 245 243;
+  --color-brand-100: 207 231 227;
+  --color-brand-200: 159 207 199;
+  --color-brand-300: 111 183 171;
+  --color-brand-400: 63 159 143;
+  --color-brand-500: 29 132 116;
+  --color-brand-600: 20 107 99;
+  --color-brand-700: 15 82 80;
+  --color-brand-800: 11 62 61;
+  --color-brand-900: 8 43 43;
+
+  --color-gold-50: 251 243 223;
+  --color-gold-100: 243 227 180;
+  --color-gold-200: 231 205 128;
+  --color-gold-300: 217 182 87;
+  --color-gold-400: 200 155 60;
+  --color-gold-500: 176 129 44;
+  --color-gold-600: 143 102 36;
+}
+
+.dark {
+  --color-parchment: 22 27 25;
+  --color-parchment-soft: 30 36 34;
+  --color-surface: 37 44 41;
+  --color-ink: 240 237 230;
+  --color-ink-soft: 196 189 177;
+  --color-ink-faint: 139 148 144;
+  --color-line: 54 63 59;
+  --color-line-soft: 44 52 49;
+
+  --color-brand-50: 20 43 41;
+  --color-brand-100: 15 63 59;
+  --color-brand-200: 20 92 84;
+  --color-brand-300: 32 122 111;
+  --color-brand-400: 63 159 143;
+  --color-brand-500: 92 191 174;
+  --color-brand-600: 118 209 193;
+  --color-brand-700: 158 224 211;
+  --color-brand-800: 200 238 231;
+  --color-brand-900: 234 245 243;
+
+  --color-gold-50: 51 42 20;
+  --color-gold-100: 92 74 30;
+  --color-gold-200: 143 102 36;
+  --color-gold-300: 176 129 44;
+  --color-gold-400: 217 182 87;
+  --color-gold-500: 231 205 128;
+  --color-gold-600: 243 227 180;
+}

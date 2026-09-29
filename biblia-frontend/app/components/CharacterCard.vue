@@ -2,7 +2,7 @@
   <div class="relative flex flex-col md:flex-row items-start gap-6 md:gap-12 group cursor-pointer">
 
     <div class="relative z-10 flex-shrink-0">
-      <div class="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-parchment shadow-xl overflow-hidden ring-4 ring-brand-50 group-hover:ring-gold-200 transition-all duration-500 bg-white flex items-center justify-center">
+      <div class="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-parchment shadow-xl overflow-hidden ring-4 ring-brand-50 group-hover:ring-gold-200 transition-all duration-500 bg-surface flex items-center justify-center">
         <img
           v-if="character.portrait_url"
           :src="character.portrait_url"
@@ -11,10 +11,15 @@
           @error="e => e.target.src = `https://ui-avatars.com/api/?name=${character.name}&background=EAF5F3&color=0F5250&size=256&bold=true`"
         />
       </div>
+      <ClientOnly>
+        <div v-if="isRead(character.id)" title="Ya leíste esta historia" class="absolute -bottom-1 -right-1 w-6 h-6 md:w-7 md:h-7 rounded-full bg-brand-600 border-2 border-parchment flex items-center justify-center text-white shadow-sm">
+          <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+      </ClientOnly>
     </div>
 
     <div class="flex-1 w-full pt-2 md:pt-6">
-      <NuxtLink :to="`/personaje/${character.id}`" class="block bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-line hover:shadow-2xl hover:shadow-brand-100/50 hover:-translate-y-1 hover:border-gold-200 transition-all duration-300">
+      <NuxtLink :to="`/personaje/${character.id}`" class="block bg-surface rounded-3xl p-6 md:p-8 shadow-sm border border-line hover:shadow-2xl hover:shadow-brand-100/50 hover:-translate-y-1 hover:border-gold-200 transition-all duration-300">
 
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <h3 class="font-serif text-3xl font-black text-ink group-hover:text-brand-600 transition-colors">{{ character.name }}</h3>
@@ -46,6 +51,8 @@ defineProps({
     required: true
   }
 })
+
+const { isRead } = useReadProgress()
 </script>
 
 <style scoped>
