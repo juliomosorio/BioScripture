@@ -2,14 +2,16 @@
   <div class="relative flex flex-col md:flex-row items-start gap-6 md:gap-12 group cursor-pointer">
 
     <div class="relative z-10 flex-shrink-0">
-      <div class="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-parchment shadow-xl overflow-hidden ring-4 ring-brand-50 group-hover:ring-gold-200 transition-all duration-500 bg-surface flex items-center justify-center">
+      <div class="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-parchment shadow-xl overflow-hidden ring-4 ring-brand-50 group-hover:ring-gold-200 transition-all duration-500 bg-brand-50 flex items-center justify-center">
         <img
           v-if="character.portrait_url"
           :src="character.portrait_url"
           :alt="character.name"
           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          @error="e => e.target.src = `https://ui-avatars.com/api/?name=${character.name}&background=EAF5F3&color=0F5250&size=256&bold=true`"
         />
+        <div v-else class="w-1/2 h-1/2 text-brand-600 group-hover:scale-110 transition-transform duration-700">
+          <CharacterIcon :roles="character.roles" />
+        </div>
       </div>
       <ClientOnly>
         <div v-if="isRead(character.id)" title="Ya leíste esta historia" class="absolute -bottom-1 -right-1 w-6 h-6 md:w-7 md:h-7 rounded-full bg-brand-600 border-2 border-parchment flex items-center justify-center text-white shadow-sm">

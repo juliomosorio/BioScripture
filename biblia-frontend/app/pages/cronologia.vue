@@ -40,8 +40,10 @@
                 class="flex items-center gap-3 bg-surface rounded-xl border border-line p-3 hover:border-brand-300 hover:shadow-md hover:-translate-y-0.5 transition-all group"
               >
                 <div class="relative w-10 h-10 flex-shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center font-bold text-brand-700 group-hover:bg-brand-100 transition-colors">
-                    {{ initial(char.name) }}
+                  <div class="w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-700 group-hover:bg-brand-100 transition-colors">
+                    <div class="w-5 h-5">
+                      <CharacterIcon :roles="char.roles" />
+                    </div>
                   </div>
                   <ClientOnly>
                     <div v-if="isRead(char.id)" class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-brand-600 border-2 border-surface flex items-center justify-center text-white">
@@ -85,8 +87,6 @@ const grouped = computed(() => {
   }
   return Array.from(map.entries()).map(([era, list]) => ({ era, characters: list }))
 })
-
-const initial = (name) => (name || '?').trim().charAt(0).toUpperCase()
 
 const { isRead } = useReadProgress()
 </script>
