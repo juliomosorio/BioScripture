@@ -2,14 +2,14 @@
   <div class="max-w-4xl mx-auto px-4 py-12">
 
     <div v-if="!authed" class="max-w-sm mx-auto bg-surface rounded-3xl shadow-xl border border-line p-8 text-center">
-      <div class="w-12 h-12 rounded-2xl bg-ink text-white flex items-center justify-center mx-auto mb-4">
+      <div class="w-12 h-12 rounded-2xl bg-ink-fixed text-white flex items-center justify-center mx-auto mb-4">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm0 0v5m6-5a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
       <h1 class="text-xl font-black text-ink mb-2">Acceso de Administración</h1>
       <p class="text-ink-faint text-sm mb-6">Ingresa la contraseña para editar el registro histórico.</p>
       <form @submit.prevent="login" class="space-y-3">
         <input v-model="passwordInput" type="password" placeholder="Contraseña" autofocus class="w-full bg-parchment-soft border border-line rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-brand-400 focus:outline-none" />
-        <button type="submit" :disabled="verifying" class="w-full bg-ink hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50">
+        <button type="submit" :disabled="verifying" class="w-full bg-ink-fixed hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50">
           {{ verifying ? 'Verificando...' : 'Entrar' }}
         </button>
         <p v-if="loginError" class="text-red-500 text-sm font-semibold">{{ loginError }}</p>
@@ -168,7 +168,7 @@
           </div>
         </section>
 
-        <button type="submit" :disabled="isSubmitting" :class="isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-ink hover:bg-brand-600'" class="w-full text-white font-bold py-4 rounded-xl transition-colors shadow-lg disabled:opacity-50">
+        <button type="submit" :disabled="isSubmitting" :class="isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-ink-fixed hover:bg-brand-600'" class="w-full text-white font-bold py-4 rounded-xl transition-colors shadow-lg disabled:opacity-50">
           {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Personaje' : 'Crear Personaje') }}
         </button>
 

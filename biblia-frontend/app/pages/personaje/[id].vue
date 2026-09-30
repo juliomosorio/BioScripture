@@ -16,20 +16,20 @@
       <p class="text-ink-faint mb-6">{{ error?.statusCode === 404 ? 'Puede que el enlace esté roto o el personaje aún no exista en el registro.' : 'No se pudo conectar con la API. Verifica que el backend esté corriendo.' }}</p>
       <div class="flex justify-center gap-3">
         <button v-if="error?.statusCode !== 404" @click="refresh()" class="px-6 py-2 bg-brand-600 text-white font-semibold rounded-full hover:bg-brand-700 transition-colors">Reintentar</button>
-        <NuxtLink to="/" class="inline-block px-6 py-2 bg-ink text-white font-semibold rounded-full hover:bg-brand-700 transition-colors">Volver al inicio</NuxtLink>
+        <NuxtLink to="/" class="inline-block px-6 py-2 bg-ink-fixed text-white font-semibold rounded-full hover:bg-brand-700 transition-colors">Volver al inicio</NuxtLink>
       </div>
     </div>
 
     <div v-else-if="character">
 
-      <header class="relative h-80 md:h-96 w-full bg-ink overflow-hidden flex items-center justify-center">
+      <header class="relative h-80 md:h-96 w-full bg-ink-fixed overflow-hidden flex items-center justify-center">
         <img
           v-if="character.cover_url"
           :src="character.cover_url"
           :alt="character.name"
           class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-fixed via-ink-fixed/40 to-ink-fixed/10"></div>
 
         <a
           :href="whatsappUrl"

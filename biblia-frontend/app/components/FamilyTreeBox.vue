@@ -45,7 +45,7 @@
           <div class="absolute -left-[22px] top-4 w-5 border-t-2 border-line"></div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <div class="bg-ink text-white font-bold uppercase tracking-wider shadow-md border border-ink px-4 py-2 rounded-lg text-xs">
+            <div class="bg-ink-fixed text-white font-bold uppercase tracking-wider shadow-md border border-ink-fixed px-4 py-2 rounded-lg text-xs">
               {{ character.name }}
             </div>
 

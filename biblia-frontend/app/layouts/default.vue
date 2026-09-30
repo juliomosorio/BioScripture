@@ -60,7 +60,7 @@
       <slot />
     </main>
 
-    <footer class="bg-ink text-parchment py-14 mt-auto">
+    <footer class="bg-ink-fixed text-parchment py-14 mt-auto">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="flex justify-center mb-6">
           <BrandLogo :size="30" dark />

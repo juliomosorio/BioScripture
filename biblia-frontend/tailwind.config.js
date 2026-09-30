@@ -26,6 +26,10 @@ export default {
           DEFAULT: withOpacity('--color-line'),
           soft: withOpacity('--color-line-soft'),
         },
+        // Superficie siempre oscura, sin importar el tema del sitio (hero con
+        // foto de portada, footer, botones oscuros, insignias). A diferencia
+        // de "ink" (que se invierte en modo oscuro), este color es fijo.
+        'ink-fixed': '#241C15',
         brand: {
           50: withOpacity('--color-brand-50'),
           100: withOpacity('--color-brand-100'),
