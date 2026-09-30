@@ -2,7 +2,7 @@
 
 Enciclopedia web de personajes bíblicos: más de 50 fichas históricas con biografía narrativa, genealogía, versículos clave, rutas geográficas en mapa y trivia generada dinámicamente a partir de los propios datos.
 
-**Demo en vivo:** _(pendiente — ver nota de despliegue más abajo)_
+**Demo en vivo:** [bio-scripture.vercel.app](https://bio-scripture.vercel.app)
 
 ## Funcionalidades
 
