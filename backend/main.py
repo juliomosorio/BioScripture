@@ -19,7 +19,7 @@ logger = logging.getLogger("bioscripture")
 # --- 1. CONFIGURACIÓN DE BASE DE DATOS ---
 DATABASE_URL = os.environ.get(
     "DATABASE_URL",
-    "postgresql://postgres:kjuliox@localhost:5432/historias_biblia",
+    "postgresql://postgres:postgres@localhost:5432/historias_biblia",
 )
 CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(",")
 # Cualquier dominio *.vercel.app del mismo proyecto (producción, previews, ramas)
