@@ -76,6 +76,8 @@
           <p class="mb-2 font-semibold text-white/70">Información de Traducción</p>
           <p>Los versículos citados en esta plataforma han sido cuidadosamente seleccionados de la traducción Reina-Valera 1960 (RVR1960), manteniendo el equilibrio entre la fidelidad al texto original hebreo/arameo/griego y la belleza literaria.</p>
         </div>
+
+        <NuxtLink to="/acerca" class="inline-block mt-6 text-xs font-semibold text-white/40 hover:text-white/70 transition-colors">Acerca de este proyecto</NuxtLink>
       </div>
     </footer>
 
