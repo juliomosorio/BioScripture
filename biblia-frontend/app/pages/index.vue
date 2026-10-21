@@ -43,6 +43,8 @@
       </ClientOnly>
     </header>
 
+    <DailyChallenge v-if="!searchQuery && !selectedEra && !selectedRole" />
+
     <div class="max-w-4xl mx-auto relative">
       <div class="absolute left-[38px] md:left-[62px] top-0 bottom-0 w-1 bg-gradient-to-b from-brand-300 via-gold-200 to-parchment rounded-full opacity-60"></div>
 

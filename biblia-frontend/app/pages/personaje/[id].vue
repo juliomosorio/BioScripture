@@ -111,7 +111,7 @@
             </div>
 
             <ClientOnly>
-              <TriviaBox :character="character" :pool="summary" />
+              <TriviaBox :character="character" />
             </ClientOnly>
           </article>
 

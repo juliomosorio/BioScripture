@@ -11,6 +11,8 @@
           <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-ink-soft">
             <NuxtLink to="/" class="hover:text-brand-600 transition-colors">Inicio</NuxtLink>
             <NuxtLink to="/cronologia" class="hover:text-brand-600 transition-colors">Cronología</NuxtLink>
+            <NuxtLink to="/quiz" class="hover:text-brand-600 transition-colors">Quiz</NuxtLink>
+            <NuxtLink to="/logros" class="hover:text-brand-600 transition-colors">Logros</NuxtLink>
             <button @click="goRandom" :disabled="randomLoading" class="hover:text-brand-600 transition-colors disabled:opacity-50 flex items-center gap-1.5">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
               {{ randomLoading ? 'Buscando...' : 'Sorpréndeme' }}
@@ -49,6 +51,8 @@
           </form>
           <NuxtLink to="/" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Inicio</NuxtLink>
           <NuxtLink to="/cronologia" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Cronología</NuxtLink>
+          <NuxtLink to="/quiz" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Quiz</NuxtLink>
+          <NuxtLink to="/logros" @click="mobileOpen = false" class="block font-semibold text-ink-soft hover:text-brand-600">Logros</NuxtLink>
           <button @click="goRandom" :disabled="randomLoading" class="block font-semibold text-ink-soft hover:text-brand-600 disabled:opacity-50">
             {{ randomLoading ? 'Buscando...' : 'Sorpréndeme' }}
           </button>
@@ -81,6 +85,8 @@
       </div>
     </footer>
 
+    <ToastHost />
+
   </div>
 </template>
 
@@ -95,6 +101,7 @@ const mobileOpen = ref(false)
 const navSearch = ref('')
 const randomLoading = ref(false)
 const { isDark, toggleTheme } = useTheme()
+useBadgeEngine()
 
 const submitSearch = () => {
   if (!navSearch.value.trim()) return
